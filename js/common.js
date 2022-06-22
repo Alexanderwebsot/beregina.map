@@ -10,6 +10,20 @@ $(document).ready(function () {
   	return false;
   })
 
+  $('.map-content__arrow').on('click', function() {
+    $('.map-content').toggleClass('map-content-active');
+  })
+
+  jQuery(function($){
+    $(document).mouseup( function(e){ // событие клика по веб-документу
+      var div = $( "#map-content" ); // тут указываем ID элемента
+      if ( !div.is(e.target) // если клик был не по нашему блоку
+          && div.has(e.target).length === 0 ) { // и не по его дочерним элементам
+          $('.map-content').removeClass('map-content-active');
+      }
+    });
+  });
+
   $('.map-info__btn').on('click', function() {
   	$('.map-dark').addClass('active-modal');
   	$('.map-form--excursion').addClass('active-modal');
@@ -89,7 +103,7 @@ $(document).ready(function () {
   	})
   })
 
-  
+
   $('.top').on('mouseover', function(argument) {
   	var timer_top = setInterval(function () {
   		counter = counter - 1;
@@ -108,6 +122,8 @@ $(document).ready(function () {
   		counter_redial = counter_redial + 1;
   		$('.map-inner').scrollLeft(counter_redial);
   	}, 1)
+
+  	
   	$('.right').on('mouseout', function(argument) {
   		clearInterval(timer_top);
   	})
