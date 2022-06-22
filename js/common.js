@@ -27,6 +27,55 @@ $(document).ready(function () {
     $('.map-form').removeClass('active-modal');
   })
 
+  function showCoords(evt){
+  	let info_block = $('.map-info-block')[0];
+  	info_block.style.left = evt.clientX + 30 + 'px'; 
+  	info_block.style.top = evt.clientY + 30 + 'px';
+    $('.map-info-block').addClass('map-info-block-active');
+  }
+
+  $('.map-svg path').on('mouseover', function() {
+  	if ($(this).hasClass('path-none')) {
+
+  	}
+  	else{
+  		showCoords(event)
+  		let parent = $(this).parent('.map-relevality');
+  		let parent_link = $(this).parent('.map-relevality');
+  		let size_ele = $(parent).attr('data-size');
+  		let status = $(parent).attr('data-status');
+  		let price = $(parent).attr('data-price');
+  		parent_link = $(parent_link).attr('data-id');
+
+  		if (status == 'sale') {
+  			$('.map-info-block').addClass('status-sale');
+  		}
+  		if (status == 'bron') {
+  			$('.map-info-block').addClass('status-bron');
+  		}
+  		if (status == 'close') {
+  			$('.map-info-block').addClass('status-close');
+  		}
+  		if (status == 'free') {
+  			$('.map-info-block').addClass('status-free');
+  			$('.map-info__status__price').text(price)
+  		}
+
+  		$('.map-info__name__content').text(parent_link)
+  		$('.map-info__size__content').text(size_ele)
+  		
+
+  		$(this).on('mouseout', function(argument) {
+  			$('.map-info-block').removeClass('status-sale');
+  			$('.map-info-block').removeClass('status-bron');
+  			$('.map-info-block').removeClass('status-close');
+  			$('.map-info-block').removeClass('status-free');
+
+  			$('.map-info-block').removeClass('map-info-block-active');
+  		})
+  	}
+  	
+  })
 
   let counter = 0;
   $('.bottom').on('mouseover', function(argument) {
@@ -51,6 +100,29 @@ $(document).ready(function () {
   	})
   })
 
+  let counter_redial = 0;
+
+  $('.right').on('mouseover', function(argument) {
+  	
+  	var timer_top = setInterval(function () {
+  		counter_redial = counter_redial + 1;
+  		$('.map-inner').scrollLeft(counter_redial);
+  	}, 1)
+  	$('.right').on('mouseout', function(argument) {
+  		clearInterval(timer_top);
+  	})
+  })
+
+  $('.left').on('mouseover', function(argument) {
+  	
+  	var timer_top = setInterval(function () {
+  		counter_redial = counter_redial - 1;
+  		$('.map-inner').scrollLeft(counter_redial);
+  	}, 1)
+  	$('.left').on('mouseout', function(argument) {
+  		clearInterval(timer_top);
+  	})
+  })
 
   $('#map-select').on('change', function() {
   	let map_select = $('#map-select').val()
@@ -72,6 +144,9 @@ $(document).ready(function () {
   			if (fill_value != '#E7E01E' && fill_value != 'white') {
   				$(paths_map[i]).addClass('path-none');
   			}
+  		}
+  		if (map_select == 'all') {
+  			$(paths_map).removeClass('path-none');
   		}
   	}
   })
